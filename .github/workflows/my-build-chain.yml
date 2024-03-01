@@ -19,4 +19,15 @@ jobs:
         with:
           node-version: '14'
       - run: npm install -g bats
-      - run: bats -v  
+      - run: bats -v
+
+  after-both-complete:
+    runs-on: ubuntu-latest
+    needs: [check-bats-version, do-something-else]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '14'
+      - run: echo "Both check-bats-version and do-something-else completed"
+      
