@@ -16,47 +16,45 @@ jobs:
       - name: Determine Version
         id: gitversion
         uses: gittools/actions/gitversion/execute@v0  
-      - name: Write version artifact
-        run: echo "${{steps.gitversion.outputs}}" > version.txt
+      - name: Write GitVersion artifacts
+        run: |
+          echo "Major: ${{ steps.gitversion.outputs.major }}" >> version.txt
+          echo "Minor: ${{ steps.gitversion.outputs.minor }}" >> version.txt
+          echo "Patch: ${{ steps.gitversion.outputs.patch }}" >> version.txt
+          echo "PreReleaseTag: ${{ steps.gitversion.outputs.preReleaseTag }}" >> version.txt
+          echo "PreReleaseTagWithDash: ${{ steps.gitversion.outputs.preReleaseTagWithDash }}" >> version.txt
+          echo "PreReleaseLabel: ${{ steps.gitversion.outputs.preReleaseLabel }}" >> version.txt
+          echo "PreReleaseNumber: ${{ steps.gitversion.outputs.preReleaseNumber }}" >> version.txt
+          echo "WeightedPreReleaseNumber: ${{ steps.gitversion.outputs.weightedPreReleaseNumber }}" >> version.txt
+          echo "BuildMetaData: ${{ steps.gitversion.outputs.buildMetaData }}" >> version.txt
+          echo "BuildMetaDataPadded: ${{ steps.gitversion.outputs.buildMetaDataPadded }}" >> version.txt
+          echo "FullBuildMetaData: ${{ steps.gitversion.outputs.fullBuildMetaData }}" >> version.txt
+          echo "MajorMinorPatch: ${{ steps.gitversion.outputs.majorMinorPatch }}" >> version.txt
+          echo "SemVer: ${{ steps.gitversion.outputs.semVer }}" >> version.txt
+          echo "LegacySemVer: ${{ steps.gitversion.outputs.legacySemVer }}" >> version.txt
+          echo "LegacySemVerPadded: ${{ steps.gitversion.outputs.legacySemVerPadded }}" >> version.txt
+          echo "AssemblySemVer: ${{ steps.gitversion.outputs.assemblySemVer }}" >> version.txt
+          echo "AssemblySemFileVer: ${{ steps.gitversion.outputs.assemblySemFileVer }}" >> version.txt
+          echo "FullSemVer: ${{ steps.gitversion.outputs.fullSemVer }}" >> version.txt
+          echo "InformationalVersion: ${{ steps.gitversion.outputs.informationalVersion }}" >> version.txt
+          echo "BranchName: ${{ steps.gitversion.outputs.branchName }}" >> version.txt
+          echo "EscapedBranchName: ${{ steps.gitversion.outputs.escapedBranchName }}" >> version.txt
+          echo "Sha: ${{ steps.gitversion.outputs.sha }}" >> version.txt
+          echo "ShortSha: ${{ steps.gitversion.outputs.shortSha }}" >> version.txt
+          echo "NuGetVersionV2: ${{ steps.gitversion.outputs.nuGetVersionV2 }}" >> version.txt
+          echo "NuGetVersion: ${{ steps.gitversion.outputs.nuGetVersion }}" >> version.txt
+          echo "NuGetPreReleaseTagV2: ${{ steps.gitversion.outputs.nuGetPreReleaseTagV2 }}" >> version.txt
+          echo "NuGetPreReleaseTag: ${{ steps.gitversion.outputs.nuGetPreReleaseTag }}" >> version.txt
+          echo "VersionSourceSha: ${{ steps.gitversion.outputs.versionSourceSha }}" >> version.txt
+          echo "CommitsSinceVersionSource: ${{ steps.gitversion.outputs.commitsSinceVersionSource }}" >> version.txt
+          echo "CommitsSinceVersionSourcePadded: ${{ steps.gitversion.outputs.commitsSinceVersionSourcePadded }}" >> version.txt
+          echo "UncommittedChanges: ${{ steps.gitversion.outputs.uncommittedChanges }}" >> version.txt
+          echo "CommitDate: ${{ steps.gitversion.outputs.commitDate }}" >> version.txt
       - uses: actions/upload-artifact@v4
         with:
           name: ${{steps.gitversion.outputs.fullSemVer}}
           path: version.txt
-      - name: Display GitVersion outputs (step output)
-        run: |
-          echo "Major: ${{ steps.gitversion.outputs.major }}"
-          echo "Minor: ${{ steps.gitversion.outputs.minor }}"
-          echo "Patch: ${{ steps.gitversion.outputs.patch }}"
-          echo "PreReleaseTag: ${{ steps.gitversion.outputs.preReleaseTag }}"
-          echo "PreReleaseTagWithDash: ${{ steps.gitversion.outputs.preReleaseTagWithDash }}"
-          echo "PreReleaseLabel: ${{ steps.gitversion.outputs.preReleaseLabel }}"
-          echo "PreReleaseNumber: ${{ steps.gitversion.outputs.preReleaseNumber }}"
-          echo "WeightedPreReleaseNumber: ${{ steps.gitversion.outputs.weightedPreReleaseNumber }}"
-          echo "BuildMetaData: ${{ steps.gitversion.outputs.buildMetaData }}"
-          echo "BuildMetaDataPadded: ${{ steps.gitversion.outputs.buildMetaDataPadded }}"
-          echo "FullBuildMetaData: ${{ steps.gitversion.outputs.fullBuildMetaData }}"
-          echo "MajorMinorPatch: ${{ steps.gitversion.outputs.majorMinorPatch }}"
-          echo "SemVer: ${{ steps.gitversion.outputs.semVer }}"
-          echo "LegacySemVer: ${{ steps.gitversion.outputs.legacySemVer }}"
-          echo "LegacySemVerPadded: ${{ steps.gitversion.outputs.legacySemVerPadded }}"
-          echo "AssemblySemVer: ${{ steps.gitversion.outputs.assemblySemVer }}"
-          echo "AssemblySemFileVer: ${{ steps.gitversion.outputs.assemblySemFileVer }}"
-          echo "FullSemVer: ${{ steps.gitversion.outputs.fullSemVer }}"
-          echo "InformationalVersion: ${{ steps.gitversion.outputs.informationalVersion }}"
-          echo "BranchName: ${{ steps.gitversion.outputs.branchName }}"
-          echo "EscapedBranchName: ${{ steps.gitversion.outputs.escapedBranchName }}"
-          echo "Sha: ${{ steps.gitversion.outputs.sha }}"
-          echo "ShortSha: ${{ steps.gitversion.outputs.shortSha }}"
-          echo "NuGetVersionV2: ${{ steps.gitversion.outputs.nuGetVersionV2 }}"
-          echo "NuGetVersion: ${{ steps.gitversion.outputs.nuGetVersion }}"
-          echo "NuGetPreReleaseTagV2: ${{ steps.gitversion.outputs.nuGetPreReleaseTagV2 }}"
-          echo "NuGetPreReleaseTag: ${{ steps.gitversion.outputs.nuGetPreReleaseTag }}"
-          echo "VersionSourceSha: ${{ steps.gitversion.outputs.versionSourceSha }}"
-          echo "CommitsSinceVersionSource: ${{ steps.gitversion.outputs.commitsSinceVersionSource }}"
-          echo "CommitsSinceVersionSourcePadded: ${{ steps.gitversion.outputs.commitsSinceVersionSourcePadded }}"
-          echo "UncommittedChanges: ${{ steps.gitversion.outputs.uncommittedChanges }}"
-          echo "CommitDate: ${{ steps.gitversion.outputs.commitDate }}"
-
+  
   build-code:
     needs: [versioning]
     runs-on: ubuntu-latest
