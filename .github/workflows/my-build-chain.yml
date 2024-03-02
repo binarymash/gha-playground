@@ -17,29 +17,22 @@ jobs:
       - run: echo "Running some tests...."
       - run: sleep $(( RANDOM % 20 ))
 
-  do-something-else:
+  code-analysis:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: '14'
-      - run: npm install -g bats
-      - run: bats -v
+      - run: echo "Running code analysis...."
+      - run: sleep $(( RANDOM % 20 ))
 
-  after-both-complete:
+  publish-packages:
     runs-on: ubuntu-latest
-    needs: [run-some-tests, do-something-else]
+    needs: [run-some-tests, code-analysis]
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: '14'
-      - run: echo "Both check-bats-version and do-something-else completed"
+      - run: echo "Publishing packages...."
+      - run: sleep $(( RANDOM % 20 ))      
 
   save-text-file:
     runs-on: ubuntu-latest
-    needs: [after-both-complete]
+    needs: [run-some-tests, code-analysis]
     if: github.event_name == 'workflow_dispatch'
     steps:
       - uses: actions/checkout@v4
