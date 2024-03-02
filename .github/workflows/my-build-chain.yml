@@ -43,6 +43,36 @@ jobs:
       
   deploy-to-dev:
     runs-on: ubuntu-latest
-    needs: [create-release]
+    needs: [create-release, publish-packages]
     steps:
       - run: sleep $(( RANDOM % 20 ))      
+
+  run-regression-tests-dev:
+    runs-on: ubuntu-latest
+    needs: [deploy-to-dev]
+    steps:
+      - run: sleep $(( RANDOM % 20 ))  
+
+  deploy-to-qa:
+    runs-on: ubuntu-latest
+    needs: [run-regression-tests-dev]
+    steps:
+      - run: sleep $(( RANDOM % 20 ))   
+
+  run-regression-tests-qa:
+    runs-on: ubuntu-latest
+    needs: [deploy-to-qa]
+    steps:
+      - run: sleep $(( RANDOM % 20 ))  
+
+  deploy-to-sbox:
+    runs-on: ubuntu-latest
+    needs: [run-regression-tests-qa]
+    steps:
+      - run: sleep $(( RANDOM % 20 ))      
+
+  deploy-to-prod:
+    runs-on: ubuntu-latest
+    needs: [create-release]
+    steps:
+      - run: sleep $(( RANDOM % 20 ))   
