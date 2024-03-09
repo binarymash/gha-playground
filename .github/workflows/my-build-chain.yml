@@ -116,10 +116,8 @@ jobs:
       - run: sleep $(( RANDOM % 20 ))   
 
   run-regression-tests-qa:
-    runs-on: ubuntu-latest
+    uses: binarymash/gha-playground/.github/workflows/called-workflow.yml@main
     needs: [deploy-to-qa]
-    steps:
-      - run: sleep $(( RANDOM % 20 ))  
 
   deploy-to-sbox:
     runs-on: ubuntu-latest
