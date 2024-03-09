@@ -1,12 +1,17 @@
 name: my-build-chain
 run-name: this workflow is called from elsewhere
 on:
-  workflow_call
+  workflow_call:
+    inputs:
+      some-value:
+        required: true
+        type: string      
+  
 jobs:
   a-job:
     runs-on: ubuntu-latest
     steps:
-      - run: echo "Doing something"
+      - run: echo "Doing something with some-valur ${{github.event.inputs.some-value}}"
       - run: sleep $(( RANDOM % 20 ))
   another-job:
     runs-on: ubuntu-latest

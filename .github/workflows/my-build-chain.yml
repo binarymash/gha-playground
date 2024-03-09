@@ -106,8 +106,10 @@ jobs:
       - run: sleep $(( RANDOM % 20 ))      
 
   run-regression-tests-dev:
-    uses: binarymash/gha-playground/.github/workflows/called-workflow.yml@main
     needs: [deploy-to-dev]
+    uses: binarymash/gha-playground/.github/workflows/called-workflow.yml@more-stuff
+    with:
+      some-value: dev
 
   deploy-to-qa:
     runs-on: ubuntu-latest
@@ -116,8 +118,10 @@ jobs:
       - run: sleep $(( RANDOM % 20 ))   
 
   run-regression-tests-qa:
-    uses: binarymash/gha-playground/.github/workflows/called-workflow.yml@main
     needs: [deploy-to-qa]
+    uses: binarymash/gha-playground/.github/workflows/called-workflow.yml@main
+    with:
+      some-value: qa
 
   deploy-to-sbox:
     runs-on: ubuntu-latest
