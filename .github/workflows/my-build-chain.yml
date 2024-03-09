@@ -1,0 +1,134 @@
+name: my-build-chain
+run-name: ${{ github.actor }} is making a build chain
+on: [push]
+jobs:
+  versioning:
+    runs-on: ubuntu-latest
+    steps:
+      - env:
+          EVENT_CONTEXT: ${{ toJSON(github.event) }}
+        run: |
+          echo $EVENT_CONTEXT      
+      - name: Install GitVersion
+        uses: gittools/actions/gitversion/setup@v0
+        with:
+          versionSpec: '5.x'      
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Determine Version
+        id: gitversion
+        uses: gittools/actions/gitversion/execute@v0  
+      - name: Write GitVersion artifacts
+        run: |
+          echo "Major: ${{ steps.gitversion.outputs.major }}" >> version.txt
+          echo "Minor: ${{ steps.gitversion.outputs.minor }}" >> version.txt
+          echo "Patch: ${{ steps.gitversion.outputs.patch }}" >> version.txt
+          echo "PreReleaseTag: ${{ steps.gitversion.outputs.preReleaseTag }}" >> version.txt
+          echo "PreReleaseTagWithDash: ${{ steps.gitversion.outputs.preReleaseTagWithDash }}" >> version.txt
+          echo "PreReleaseLabel: ${{ steps.gitversion.outputs.preReleaseLabel }}" >> version.txt
+          echo "PreReleaseNumber: ${{ steps.gitversion.outputs.preReleaseNumber }}" >> version.txt
+          echo "WeightedPreReleaseNumber: ${{ steps.gitversion.outputs.weightedPreReleaseNumber }}" >> version.txt
+          echo "BuildMetaData: ${{ steps.gitversion.outputs.buildMetaData }}" >> version.txt
+          echo "BuildMetaDataPadded: ${{ steps.gitversion.outputs.buildMetaDataPadded }}" >> version.txt
+          echo "FullBuildMetaData: ${{ steps.gitversion.outputs.fullBuildMetaData }}" >> version.txt
+          echo "MajorMinorPatch: ${{ steps.gitversion.outputs.majorMinorPatch }}" >> version.txt
+          echo "SemVer: ${{ steps.gitversion.outputs.semVer }}" >> version.txt
+          echo "LegacySemVer: ${{ steps.gitversion.outputs.legacySemVer }}" >> version.txt
+          echo "LegacySemVerPadded: ${{ steps.gitversion.outputs.legacySemVerPadded }}" >> version.txt
+          echo "AssemblySemVer: ${{ steps.gitversion.outputs.assemblySemVer }}" >> version.txt
+          echo "AssemblySemFileVer: ${{ steps.gitversion.outputs.assemblySemFileVer }}" >> version.txt
+          echo "FullSemVer: ${{ steps.gitversion.outputs.fullSemVer }}" >> version.txt
+          echo "InformationalVersion: ${{ steps.gitversion.outputs.informationalVersion }}" >> version.txt
+          echo "BranchName: ${{ steps.gitversion.outputs.branchName }}" >> version.txt
+          echo "EscapedBranchName: ${{ steps.gitversion.outputs.escapedBranchName }}" >> version.txt
+          echo "Sha: ${{ steps.gitversion.outputs.sha }}" >> version.txt
+          echo "ShortSha: ${{ steps.gitversion.outputs.shortSha }}" >> version.txt
+          echo "NuGetVersionV2: ${{ steps.gitversion.outputs.nuGetVersionV2 }}" >> version.txt
+          echo "NuGetVersion: ${{ steps.gitversion.outputs.nuGetVersion }}" >> version.txt
+          echo "NuGetPreReleaseTagV2: ${{ steps.gitversion.outputs.nuGetPreReleaseTagV2 }}" >> version.txt
+          echo "NuGetPreReleaseTag: ${{ steps.gitversion.outputs.nuGetPreReleaseTag }}" >> version.txt
+          echo "VersionSourceSha: ${{ steps.gitversion.outputs.versionSourceSha }}" >> version.txt
+          echo "CommitsSinceVersionSource: ${{ steps.gitversion.outputs.commitsSinceVersionSource }}" >> version.txt
+          echo "CommitsSinceVersionSourcePadded: ${{ steps.gitversion.outputs.commitsSinceVersionSourcePadded }}" >> version.txt
+          echo "UncommittedChanges: ${{ steps.gitversion.outputs.uncommittedChanges }}" >> version.txt
+          echo "CommitDate: ${{ steps.gitversion.outputs.commitDate }}" >> version.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ${{steps.gitversion.outputs.fullSemVer}}
+          path: version.txt
+  
+  build-code:
+    needs: [versioning]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Sleep for random seconds
+        run: echo "Building...."
+      - run: sleep $(( RANDOM % 20 ))
+
+  code-analysis:
+    needs: [versioning]
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Running code analysis...."
+      - run: sleep $(( RANDOM % 20 ))
+
+  run-some-tests:
+    needs: [build-code]
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Running some tests...."
+      - run: sleep $(( RANDOM % 20 ))
+
+  publish-packages:
+    runs-on: ubuntu-latest
+    needs: [run-some-tests, code-analysis]
+    steps:
+      - run: echo "Publishing packages...."
+      - run: sleep $(( RANDOM % 20 ))      
+
+  create-release:
+    runs-on: ubuntu-latest
+    needs: [run-some-tests, code-analysis]
+    steps:
+      - run: echo "This is a sample text file" > sample.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: my-artifact
+          path: sample.txt
+      - run: sleep $(( RANDOM % 20 ))      
+      
+  deploy-to-dev:
+    runs-on: ubuntu-latest
+    needs: [create-release, publish-packages]
+    steps:
+      - run: sleep $(( RANDOM % 20 ))      
+
+  run-regression-tests-dev:
+    uses: binarymash/gha-playground/.github/workflows/called-workflow.yml@main
+    needs: [deploy-to-dev]
+
+  deploy-to-qa:
+    runs-on: ubuntu-latest
+    needs: [run-regression-tests-dev]
+    steps:
+      - run: sleep $(( RANDOM % 20 ))   
+
+  run-regression-tests-qa:
+    runs-on: ubuntu-latest
+    needs: [deploy-to-qa]
+    steps:
+      - run: sleep $(( RANDOM % 20 ))  
+
+  deploy-to-sbox:
+    runs-on: ubuntu-latest
+    needs: [run-regression-tests-qa]
+    steps:
+      - run: sleep $(( RANDOM % 20 ))      
+
+  deploy-to-prod:
+    runs-on: ubuntu-latest
+    needs: [deploy-to-sbox]
+    steps:
+      - run: sleep $(( RANDOM % 20 ))   
