@@ -119,7 +119,7 @@ jobs:
 
   run-regression-tests-qa:
     needs: [deploy-to-qa]
-    uses: binarymash/gha-playground/.github/workflows/called-workflow.yml@main
+    uses: binarymash/gha-playground/.github/workflows/called-workflow.yml@more-stuff
     with:
       some-value: qa
 
