@@ -11,9 +11,11 @@ jobs:
   a-job:
     runs-on: ubuntu-latest
     steps:
-      - run: echo "Doing something with some-valur ${{github.event.inputs.some-value}}"
+      - run: echo "Doing something with some-value ${{ inputs.some-value }}"
+      - run: echo ${{ inputs.some-value }}
       - run: sleep $(( RANDOM % 20 ))
   another-job:
+    needs: [a-job]
     runs-on: ubuntu-latest
     steps:
       - run: echo "Doing something else"
