@@ -1,5 +1,5 @@
-name: my-build-chain
-run-name: this workflow is called from elsewhere
+name: regression-tests
+run-name: Runs regression tests
 on:
   workflow_call:
     inputs:

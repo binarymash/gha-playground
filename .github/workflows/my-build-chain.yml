@@ -107,7 +107,7 @@ jobs:
 
   run-regression-tests-dev:
     needs: [deploy-to-dev]
-    uses: binarymash/gha-playground/.github/workflows/called-workflow.yml@more-stuff
+    uses: binarymash/gha-playground/.github/workflows/regression-tests.yml@more-stuff
     with:
       some-value: dev
 
@@ -119,7 +119,7 @@ jobs:
 
   run-regression-tests-qa:
     needs: [deploy-to-qa]
-    uses: binarymash/gha-playground/.github/workflows/called-workflow.yml@more-stuff
+    uses: binarymash/gha-playground/.github/workflows/regression-tests.yml@more-stuff
     with:
       some-value: qa
 
