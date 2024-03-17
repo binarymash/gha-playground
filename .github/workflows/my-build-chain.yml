@@ -100,37 +100,26 @@ jobs:
       - run: sleep $(( RANDOM % 20 ))      
       
   deploy-to-dev:
-    runs-on: ubuntu-latest
     needs: [create-release, publish-packages]
-    steps:
-      - run: sleep $(( RANDOM % 20 ))      
-
-  run-regression-tests-dev:
-    needs: [deploy-to-dev]
-    uses: binarymash/gha-playground/.github/workflows/regression-tests.yml@more-stuff
+    uses: binarymash/gha-playground/.github/workflows/deploy.yml@more-stuff
     with:
-      some-value: dev
+      environment: dev
 
   deploy-to-qa:
-    runs-on: ubuntu-latest
-    needs: [run-regression-tests-dev]
-    steps:
-      - run: sleep $(( RANDOM % 20 ))   
-
-  run-regression-tests-qa:
-    needs: [deploy-to-qa]
-    uses: binarymash/gha-playground/.github/workflows/regression-tests.yml@more-stuff
+    needs: [deploy-to-dev]
+    uses: binarymash/gha-playground/.github/workflows/deploy.yml@more-stuff
     with:
-      some-value: qa
-
+      environment: qa
+    
   deploy-to-sbox:
-    runs-on: ubuntu-latest
-    needs: [run-regression-tests-qa]
-    steps:
-      - run: sleep $(( RANDOM % 20 ))      
+    needs: [deploy-to-qa]
+    uses: binarymash/gha-playground/.github/workflows/deploy.yml@more-stuff
+    with:
+      environment: sbox
 
   deploy-to-prod:
-    runs-on: ubuntu-latest
     needs: [deploy-to-sbox]
-    steps:
-      - run: sleep $(( RANDOM % 20 ))   
+    uses: binarymash/gha-playground/.github/workflows/deploy.yml@more-stuff
+    with:
+      environment: prod
+        

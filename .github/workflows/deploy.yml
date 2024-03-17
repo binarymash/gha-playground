@@ -1,0 +1,22 @@
+name: deploy
+run-name: Deploy the system to the specified environment
+on:
+  workflow_call:
+    inputs:
+      environment:
+        required: true
+        type: string      
+  
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Deploying to ${{ inputs.environment }}"
+      - run: sleep $(( RANDOM % 20 ))
+  test:
+    needs: [deploy]
+    uses: binarymash/gha-playground/.github/workflows/regression-tests.yml@more-stuff
+    with:
+      environment: ${{ inputs.environment }}
+
+  
