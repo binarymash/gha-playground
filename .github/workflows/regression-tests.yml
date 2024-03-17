@@ -3,7 +3,7 @@ run-name: Runs regression tests
 on:
   workflow_call:
     inputs:
-      some-value:
+      environment:
         required: true
         type: string      
   
@@ -11,8 +11,8 @@ jobs:
   a-job:
     runs-on: ubuntu-latest
     steps:
-      - run: echo "Doing something with some-value ${{ inputs.some-value }}"
-      - run: echo ${{ inputs.some-value }}
+      - run: echo "Doing something with some-value ${{ inputs.environment }}"
+      - run: echo ${{ inputs.environment }}
       - run: sleep $(( RANDOM % 20 ))
   another-job:
     needs: [a-job]

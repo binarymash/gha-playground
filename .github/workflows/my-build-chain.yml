@@ -97,16 +97,10 @@ jobs:
         with:
           name: my-artifact
           path: sample.txt
-      - run: sleep $(( RANDOM % 20 ))      
-      
-  deploy-to-dev:
-    needs: [create-release, publish-packages]
-    uses: binarymash/gha-playground/.github/workflows/deploy.yml@more-stuff
-    with:
-      environment: dev
+      - run: sleep $(( RANDOM % 20 ))
 
   deploy-to-qa:
-    needs: [deploy-to-dev]
+    needs: [create-release, publish-packages]    
     uses: binarymash/gha-playground/.github/workflows/deploy.yml@more-stuff
     with:
       environment: qa
