@@ -15,7 +15,7 @@ jobs:
       - run: sleep $(( RANDOM % 20 ))
   test:
     needs: [deploy]
-    uses: binarymash/gha-playground/.github/workflows/regression-tests.yml@more-stuff
+    uses: binarymash/gha-playground/.github/workflows/regression-tests.yml@main
     with:
       environment: ${{ inputs.environment }}
 

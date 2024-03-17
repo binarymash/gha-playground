@@ -101,19 +101,19 @@ jobs:
 
   deploy-to-qa:
     needs: [create-release, publish-packages]    
-    uses: binarymash/gha-playground/.github/workflows/deploy.yml@more-stuff
+    uses: binarymash/gha-playground/.github/workflows/deploy.yml@main
     with:
       environment: qa
     
   deploy-to-sbox:
     needs: [deploy-to-qa]
-    uses: binarymash/gha-playground/.github/workflows/deploy.yml@more-stuff
+    uses: binarymash/gha-playground/.github/workflows/deploy.yml@main
     with:
       environment: sbox
 
   deploy-to-prod:
     needs: [deploy-to-sbox]
-    uses: binarymash/gha-playground/.github/workflows/deploy.yml@more-stuff
+    uses: binarymash/gha-playground/.github/workflows/deploy.yml@main
     with:
       environment: prod
         
